@@ -5,6 +5,12 @@
 
 <!-- badges: start -->
 
+[![CRAN
+version](https://www.r-pkg.org/badges/version/rapr)](https://CRAN.R-project.org/package=rapr)
+[![CRAN
+status](https://badges.cranchecks.info/worst/rapr.svg)](https://cran.r-project.org/web/checks/check_results_rapr.html)
+[![Development
+Version](https://brownag.r-universe.dev/badges/rapr)](https://brownag.r-universe.dev/)
 [![html-docs](https://img.shields.io/badge/docs-HTML-informational)](https://humus.rocks/rapr/)
 [![R-CMD-check](https://github.com/brownag/rapr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/brownag/rapr/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
@@ -15,8 +21,27 @@ The goal of {rapr} is to provide a simple **R** interface to ‘Rangeland
 Analysis Platform’ (RAP) products. See <https://rangelands.app/products>
 and `citation("rapr")` for more information.
 
-Two sets of RAP products are available (see `get_rap()` `source`
-argument).
+## Installation
+
+You can install {rapr} from CRAN:
+
+``` r
+install.packages("rapr")
+```
+
+You can install the development version of {rapr} from
+[GitHub](https://github.com/brownag/rapr) with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("brownag/rapr")
+```
+
+## Sources, Products, and Band Information
+
+Two sets of gridded RAP products are available (see `get_rap()` `source`
+argument). Also, you can access the API endpoint for the 16-day
+production tabular data (see `get_rap_production16day_table()`).
 
 - `"rap-30m"` is Landsat-derived and has approximately 30 meter
   resolution in WGS84 decimal degrees (`"EPSG:4326"`). This is the data
@@ -25,8 +50,6 @@ argument).
 - `"rap-10m"` is Sentinel 2-derived and has 10 meter resolution in the
   local WGS84 UTM zone (`"EPSG:326XX"`, where XX is the two digit UTM
   zone number). It is a newer (2025) data source.
-
-## Sources, Products, and Band Information
 
 For `"rap-30m"` you can query several Landsat derived annual biomass,
 cover, and Net Primary Productivity products from 1986 to present:
@@ -119,23 +142,7 @@ For `"rap-10m"` requests spanning *multiple* UTM zones, either pass a
 *SpatRaster* object as `x` or specify `template` argument. In lieu of a
 user-specified grid system for multi-zone requests, a default CONUS
 Albers Equal Area projection (`"EPSG:5070"`) with 10 m resolution will
-be used. See \[rap_projection()\] for options and details.
-
-## Installation
-
-You can install {rapr} from CRAN:
-
-``` r
-install.packages("rapr")
-```
-
-You can install the development version of {rapr} from
-[GitHub](https://github.com/brownag/rapr) with:
-
-``` r
-# install.packages("remotes")
-remotes::install_github("brownag/rapr")
-```
+be used. See `rap_projection()` for options and details.
 
 ## Example
 
@@ -153,7 +160,8 @@ the source data grid system.
 
 ``` r
 library(terra)
-#> terra 1.8.42
+#> Warning: package 'terra' was built under R version 4.5.1
+#> terra 1.8.56
 library(rapr)
 
 res <- get_rap(
@@ -172,16 +180,16 @@ res <- get_rap(
 
 res
 #> class       : SpatRaster 
-#> dimensions  : 37, 37, 24  (nrow, ncol, nlyr)
+#> size        : 37, 37, 24  (nrow, ncol, nlyr)
 #> resolution  : 0.0002694946, 0.0002694946  (x, y)
 #> extent      : -120, -119.99, 36.99002, 36.99999  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
 #> source(s)   : memory
-#> names       : veget~grass, veget~round, veget~itter, veget~grass, veget~shrub, veget~_tree, ... 
-#> min values  :           0,           0,           0,           0,           0,           0, ... 
-#> max values  :          80,          26,          33,          74,          13,           9, ... 
-#> unit        :     % cover,     % cover,     % cover,     % cover,     % cover,     % cover, ... 
-#> time (years): 1986 to 2016 (2 steps)
+#> names       : veget~grass, veget~round, veget~itter, veget~grass, veget~shrub, veget~_tree,     ... 
+#> min values  :           0,           0,           0,           0,           0,           0,     ... 
+#> max values  :          80,          26,          33,          74,          13,           9,     ... 
+#> unit        : % cover 
+#> time (years): 1986 to 2016 (4 steps)
 
 plot(res)
 ```
@@ -206,9 +214,9 @@ e.g. `get_rap(x = c(-120, 37, -119.99, 36.99), ...)`.
 
     #> To cite rapr in publications use:
     #> 
-    #>   Brown, A. (2025). rapr: Interface to Rangeland Analysis Platform
-    #>   (RAP) Vegetation Biomass and Cover Products. R package version 1.0.0.
-    #>   http://github.com/brownag/rapr
+    #>   Brown A (2025). _rapr: Interface to Rangeland Analysis Platform (RAP)
+    #>   Vegetation Biomass and Cover Products_. R package version 1.1.0,
+    #>   <https://CRAN.R-project.org/package=rapr>.
     #> 
     #>   Allred, B.W., S.E. McCord, T.J. Assal, B.T. Bestelmeyer, C.S. Boyd,
     #>   A.C. Brooks, S.M. Cady, S.D. Fuhlendorf, S.A. Green, G.R. Harrison,
